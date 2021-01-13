@@ -1,13 +1,47 @@
-body {
+@font-face {
+  font-family: 'NanumSquareRoundR';
+  src: url('https://hashsnap-static.s3.ap-northeast-2.amazonaws.com/file/fonts/NanumSquareRoundR.ttf') format("truetype");
+}
+@font-face {
+  font-family: 'NanumSquareRoundB';
+  src: url('https://hashsnap-static.s3.ap-northeast-2.amazonaws.com/file/fonts/NanumSquareRoundB.ttf') format("truetype");
+}
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {  
+  font-family: 'NanumSquareRoundR';
+  color: #333;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e0e0e0;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  font-family: 'NanumSquareRoundB';
+  font-size: 15px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer
+}
+
+input {
+  font-family: 'NanumSquareRoundB';
+  font-size: 15px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background: none;
 }

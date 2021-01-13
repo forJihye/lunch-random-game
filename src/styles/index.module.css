@@ -1,0 +1,70 @@
+.Container {
+  width: 420px;
+  color: #334155;
+}
+.Inner {
+  width: 100%;
+  padding: 30px;
+  margin-top: 20px;
+  border-radius: 15px;
+  background: #e0e0e0;
+  box-shadow:  5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+
+.MeunGrid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.MenuItem {
+  padding: 12px 8px;
+  font-size: 13px;
+  text-align: center;
+  font-family: 'NanumSquareRoundB';
+  white-space: nowrap;
+  border-radius: 6px;
+  background: #e0e0e0;
+  box-shadow:  5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+
+.StartButton {
+  width: 300px;
+  height: 58px;
+  display: block;
+  margin: 0 auto;
+  color: #334155;
+  font-size: 15px;
+  text-transform: uppercase;
+  background:#e0e0e0;
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+.StartButton:hover {
+  box-shadow: -5px -5px 10px #bebebe, 5px 5px 10px #ffffff;
+}
+.AddButton {
+  width: 300px;
+  height: 58px;
+  display: block;
+  margin: 0 auto;
+  color: #334155;
+  font-size: 15px;
+  text-transform: uppercase;
+  background:#e0e0e0;
+  box-shadow: -5px -5px 10px #bebebe, 5px 5px 10px #ffffff;
+}
+.AddButton:hover {
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+.Icon {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  color: #334155;
+  margin-right: 10px;
+}
+.Text {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 12px;
+}
