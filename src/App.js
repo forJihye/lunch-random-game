@@ -41,28 +41,33 @@ function App() {
   const shuffleTarget = useRef();
   const selectedMenus = menus.filter(({select}) => select);
 
+  const onShuffle = () => {
+    const spin = () => {
+      const shuffle = new Shuffle();
+      const length = selectedMenus.length * 26;
+      shuffle.y += 26;
+      shuffle.render(shuffleTarget.current);
+      requestAnimationFrame(spin);
+    }
+    // shuffleTarget.current.style.transform = 'translateY(-26px)'
+  }
+
   return <>
     <main className='main'>
       <h2 className='main__title'>오늘 뭐묵?</h2>
       <p className='main__desc'>귀한 점심시간을 1분1초도 허투루 흘러가지 않도록 (먹기 싫어도 먹어야함)</p>
-      <section className='section'>
-        {!selectedMenus.length ? <button className='handler neumo-active' onClick={_=> setIsPopup(!isPopup)}>
-          <svg className='icon' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span>메뉴 선택</span>
-        </button> : null}
-
-        {selectedMenus.length ? <div className="section__menu">
-          <h4>선택한 메뉴</h4>
-          <div className="menu-list">
-            {menus.map((menu, id) => menu.select ? <Menu key={`menu${id}`} name={menu.name} /> : null)}
-          </div>
-        </div> : <div className="menu-none">후보 메뉴를 먼저 선택하세요!</div>}
-      </section>
       
       {selectedMenus.length 
-      ? <> 
+      ? <>
+        <section className='section'>
+          <div className="section__menu">
+            <h4>선택한 메뉴</h4>
+            <div className="menu-list">
+              {menus.map((menu, id) => menu.select ? <Menu key={`menu${id}`} name={menu.name} /> : null)}
+            </div>
+          </div> 
+        </section>
+
         <section className="section section__shuffle">
           <div className="shuffle__wrap">
             <div className="shuffle__inner" ref={shuffleTarget}>
@@ -72,27 +77,23 @@ function App() {
             </div>
           </div>
         </section> 
-        <button 
-          className='handler neumo' 
-          style={{marginTop: 20, borderRadius: 15}}
-          onClick={() => {
-            const spin = () => {
-              const shuffle = new Shuffle();
-              const length = selectedMenus.length * 26;
-              shuffle.y += 26;
-              shuffle.render(shuffleTarget.current);
-              requestAnimationFrame(spin);
-            }
-            // shuffleTarget.current.style.transform = 'translateY(-26px)'
-          }}
-        >
+
+        <button className='handler neumo shuffle__start' onClick={onShuffle}>
           <svg className='icon' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
           </svg>
           <span>start!</span>
         </button>
       </>
-      : null}
+      : <section className='section'>
+          <button className='handler neumo-active' onClick={_=> setIsPopup(!isPopup)}>
+            <svg className='icon' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span>메뉴 선택</span>
+          </button> 
+          <div className="menu-none">후보 메뉴를 먼저 선택하세요!</div>
+      </section>}
     </main>
 
     <section className={`popup ${isPopup ? 'block' : 'hidden'}`}>
