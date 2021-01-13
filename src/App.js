@@ -3,26 +3,16 @@ import React, { useRef, useState } from 'react';
 import MENUS from './config';
 import {createMenuData, shuffleArray} from './utils';
 
-// const Item = React.forwardRef(({menu, onClick, ...props}, ref) => {
-//   return <span ref={ref} onClick={onClick} className='menu-list__item' {...props}>{menu}</span>
-// }) 
-// setAllMenu(!allMenu);
-// const menuItems = menuList.current.children;
-// [...menuItems].forEach(menu => {
-//   const className = 'menu-list__item--active';
-//   const ishave = menu.classList.contains(className);
-//   ishave ? menu.classList.remove(className) : menu.classList.add(className)
-// });
-const Menu = ({name, ...props}) => <span {...props} className="menu-list__item">{name}</span>
+const MenuItem = ({name, ...props}) => <span {...props} className="menu-list__item">{name}</span>
 
-const SelectMenu = ({menu, onClick, ...props}) => {
+const SelectMenuItem = ({menu, onClick}) => {
   return <span 
-    {...props} 
     className={`menu-list__item ${menu.select ? 'menu-list__item--active' : ''}`} 
     onClick={() => onClick(menu)}
   >{menu.name}</span>
 }
-const SelectedMenu = ({name, ...props}) => <span {...props} className="shuffle__item">{name}</span> 
+
+const ShuffleItem = ({name, ...props}) => <span {...props} className="shuffle__item">{name}</span> 
 
 const initalMenus = createMenuData(MENUS);
 
@@ -40,6 +30,41 @@ function App() {
   const [isPopup, setIsPopup] = useState(false);
   const shuffleTarget = useRef();
   const selectedMenus = menus.filter(({select}) => select);
+
+  const onAddNewMenu = () => {
+    if(newMenu.length === 0) return;
+    const includes = menus.filter(menu => menu.name.includes(newMenu));
+    if(includes.length) return alert('이미 존재하는 메뉴입니다.');
+    setMenus(menus => {
+      const last = menus[menus.length-1];
+      return menus.concat({id: last.id+1, name: newMenu, select: true});
+    });
+  }
+
+  const onSelect = ({id, select}) => {
+    setMenus(menus => menus.map(menu => {
+      if(menu.id === id) menu.select = !select;
+      return menu;
+    }))
+  }
+
+  const onAllSelect = () => {
+    let flag = allSelected;
+    if(!flag){
+      flag = true;
+      setAllSelected(flag);
+      setMenus(menus => menus.map(menu => ({...menu, select: flag})));
+    }else{
+      flag = false;
+      setAllSelected(flag);
+      setMenus(menus => menus.map(menu => ({...menu, select: flag})));
+    }
+  }
+
+  const onSelected = () => {
+    if(selectedMenus.length < 3) return alert('메뉴을 3개 이상 선택하세요.');
+    setIsPopup(!isPopup);
+  }
 
   const onShuffle = () => {
     const spin = () => {
@@ -63,7 +88,7 @@ function App() {
           <div className="section__menu">
             <h4>선택한 메뉴</h4>
             <div className="menu-list">
-              {menus.map((menu, id) => menu.select ? <Menu key={`menu${id}`} name={menu.name} /> : null)}
+              {menus.map((menu, id) => menu.select ? <MenuItem key={`menu${id}`} name={menu.name} /> : null)}
             </div>
           </div> 
         </section>
@@ -72,7 +97,7 @@ function App() {
           <div className="shuffle__wrap">
             <div className="shuffle__inner" ref={shuffleTarget}>
               {shuffleArray(selectedMenus).map((menu, i) => {
-                return menu.select ? <SelectedMenu key={`menu${i}`} name={menu.name} /> : null;
+                return menu.select ? <ShuffleItem key={`menu${i}`} name={menu.name} /> : null;
               })}
             </div>
           </div>
@@ -102,21 +127,9 @@ function App() {
         <div className="popup__inner">
           <div className="popup__inner-handler">
             <div className="menu-all">
-              <button 
-                className="menu-all__button neumo"
-                onClick={() => {
-                  let flag = allSelected;
-                  if(!flag){
-                    flag = true;
-                    setAllSelected(flag);
-                    setMenus(menus => menus.map(menu => ({...menu, select: flag})));
-                  }else{
-                    flag = false;
-                    setAllSelected(flag);
-                    setMenus(menus => menus.map(menu => ({...menu, select: flag})));
-                  }
-                }}
-              >{allSelected ? '전체 해제' : '전체 선택'}</button>
+              <button className="menu-all__button neumo" onClick={onAllSelect}>
+                {allSelected ? '전체 해제' : '전체 선택'}
+              </button>
             </div>
             <div className="menu-add">
               <input 
@@ -126,18 +139,7 @@ function App() {
                 onChange={({target}) => setNewMenu(target.value)} 
                 placeholder="메뉴 추가"
               />
-              <button
-                className="menu-add__button"
-                onClick={() => {
-                  if(newMenu.length === 0) return;
-                  const includes = menus.filter(menu => menu.name.includes(newMenu));
-                  if(includes.length) return alert('이미 존재하는 메뉴입니다.');
-                  setMenus(menus => {
-                    const last = menus[menus.length-1];
-                    return menus.concat({id: last.id+1, name: newMenu, select: true});
-                  });
-                }}
-              >
+              <button className="menu-add__button" onClick={onAddNewMenu}>
                 <svg className='icon' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -146,25 +148,10 @@ function App() {
           </div>
         
           <div className='menu-list'>
-            {menus.map((menu, i) => <SelectMenu 
-              key={`menu${i}`} 
-              menu={menu}
-              onClick={({id, select}) => {
-                setMenus(menus => menus.map(menu => {
-                  if(menu.id === id) menu.select = !select;
-                  return menu;
-                }))
-              }} 
-            />)}
+            {menus.map((menu, i) => <SelectMenuItem key={`menu${i}`} menu={menu} onClick={onSelect} />)}
           </div>
 
-          <button 
-            className='menu-add__insert neumo'
-            onClick={() => {
-              if(selectedMenus.length < 3) return alert('메뉴을 3개 이상 선택하세요.');
-              setIsPopup(!isPopup);
-            }}
-          >
+          <button className='menu-add__insert neumo' onClick={onSelected}>
             <svg className="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
