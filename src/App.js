@@ -101,14 +101,15 @@ function App() {
             </div>
           </div> 
         </section>
+        <h4 className="suffle__title">과연 오늘의 점심 메뉴는?</h4>
+        <button className='handler neumo shuffle__start' onClick={onShuffle}>
+          <span>{!result ? "메뉴 고르기 시작! 😜" : '마음에 안들어 😥 다시!'}</span>
+        </button>
         <section className="section section__shuffle" ref={shuffleTarget}>
           {selectedMenus.map((menu, i) => {
             return menu.select ? <ShuffleItem key={`menu${i}`} name={menu.name} /> : null;
           })}
         </section> 
-        <button className='handler neumo shuffle__start' onClick={onShuffle}>
-          <span>{!result ? "메뉴를 부탁해 😜" : '마음에 안들어 😥 다시!'}</span>
-        </button>
       </>
       : <section className='section'>
           <button className='handler neumo-active' onClick={_=> setIsPopup(!isPopup)}>

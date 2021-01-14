@@ -55,7 +55,7 @@
 
 .section__shuffle {
   padding: 0;
-  height: 100px;
+  height: 80px;
   position: relative;
   text-align: center;
   overflow: hidden;
@@ -78,8 +78,13 @@
 
 .shuffle__start {
   margin-top: 20px;
-  font-size: 20px;
+  font-size: 18px;
   border-radius: 15px;
+}
+.suffle__title {
+  text-align: center;
+  font-size: 17px;
+  margin-top: 40px;
 }
 
 .icon {
