@@ -32,6 +32,7 @@ function App() {
       const last = menus[menus.length-1];
       return menus.concat({id: last.id+1, name: newMenu, select: true});
     });
+    setNewMenu('');
   }
 
   const onSelect = ({id, select}) => {
