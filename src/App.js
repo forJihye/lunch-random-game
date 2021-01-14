@@ -4,7 +4,7 @@ import MENUS from './config';
 import {createMenuData, shuffleArray} from './utils';
 
 const MenuItem = ({name, ...props}) => <span {...props} className="menu-list__item">{name}</span>
-
+const ShuffleItem = ({name, ...props}) => <span {...props} className="shuffle__item">{name}</span> 
 const SelectMenuItem = ({menu, onClick}) => {
   return <span 
     className={`menu-list__item ${menu.select ? 'menu-list__item--active' : ''}`} 
@@ -12,22 +12,15 @@ const SelectMenuItem = ({menu, onClick}) => {
   >{menu.name}</span>
 }
 
-const ShuffleItem = ({name, ...props}) => <span {...props} className="shuffle__item">{name}</span> 
-
 const initalMenus = createMenuData(MENUS);
-
-class Shuffle {
-  y;
-  render(el){
-    el.style.transform = `translateY(${this.y}px)`
-  }
-}
 
 function App() {
   const [menus, setMenus] = useState(initalMenus);
   const [newMenu, setNewMenu] = useState('');
+  const [result, setResult] = useState('');
   const [allSelected, setAllSelected] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
+
   const shuffleTarget = useRef();
   const selectedMenus = menus.filter(({select}) => select);
 
@@ -62,19 +55,35 @@ function App() {
   }
 
   const onSelected = () => {
-    if(selectedMenus.length < 3) return alert('메뉴을 3개 이상 선택하세요.');
+    if(selectedMenus.length < 3) return alert('메뉴를 3개 이상 선택하세요.');
     setIsPopup(!isPopup);
   }
 
+  const shuffle = ({start, end, duration, render, finished}) => {
+    const now = performance.now();
+    const items = shuffleArray([...shuffleTarget.current.childNodes]);
+    requestAnimationFrame(function move(time){
+      let timefraction = (time - now) / duration;
+      const value = end * timefraction;
+      const index = Math.floor(value % items.length);
+      render(items, index);
+
+      if(timefraction > 1) finished(items[index]);
+      else requestAnimationFrame(move);
+    });
+  }
   const onShuffle = () => {
-    const spin = () => {
-      const shuffle = new Shuffle();
-      const length = selectedMenus.length * 26;
-      shuffle.y += 26;
-      shuffle.render(shuffleTarget.current);
-      requestAnimationFrame(spin);
-    }
-    // shuffleTarget.current.style.transform = 'translateY(-26px)'
+    shuffle({
+      start: 0,
+      end: 100, 
+      duration: 3000, 
+      render: (items, index) => {
+        if(!items[index]) return;
+        items.forEach(item => item.style.display = 'none');
+        items[index].style.display = 'block';
+      },
+      finished: (result) => setResult(result.innerText)
+    });
   }
 
   return <>
@@ -92,22 +101,13 @@ function App() {
             </div>
           </div> 
         </section>
-
-        <section className="section section__shuffle">
-          <div className="shuffle__wrap">
-            <div className="shuffle__inner" ref={shuffleTarget}>
-              {shuffleArray(selectedMenus).map((menu, i) => {
-                return menu.select ? <ShuffleItem key={`menu${i}`} name={menu.name} /> : null;
-              })}
-            </div>
-          </div>
+        <section className="section section__shuffle" ref={shuffleTarget}>
+          {selectedMenus.map((menu, i) => {
+            return menu.select ? <ShuffleItem key={`menu${i}`} name={menu.name} /> : null;
+          })}
         </section> 
-
         <button className='handler neumo shuffle__start' onClick={onShuffle}>
-          <svg className='icon' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
-          </svg>
-          <span>start!</span>
+          <span>{!result ? "메뉴를 부탁해 😜" : '마음에 안들어 😥 다시!'}</span>
         </button>
       </>
       : <section className='section'>
