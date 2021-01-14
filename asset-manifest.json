@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/lunch-random-game/static/css/main.7e9b1562.chunk.css",
+    "main.js": "/lunch-random-game/static/js/main.51431dc7.chunk.js",
+    "main.js.map": "/lunch-random-game/static/js/main.51431dc7.chunk.js.map",
+    "runtime-main.js": "/lunch-random-game/static/js/runtime-main.022c32fd.js",
+    "runtime-main.js.map": "/lunch-random-game/static/js/runtime-main.022c32fd.js.map",
+    "static/js/2.bb46e8fa.chunk.js": "/lunch-random-game/static/js/2.bb46e8fa.chunk.js",
+    "static/js/2.bb46e8fa.chunk.js.map": "/lunch-random-game/static/js/2.bb46e8fa.chunk.js.map",
+    "static/js/3.3ccb9db1.chunk.js": "/lunch-random-game/static/js/3.3ccb9db1.chunk.js",
+    "static/js/3.3ccb9db1.chunk.js.map": "/lunch-random-game/static/js/3.3ccb9db1.chunk.js.map",
+    "index.html": "/lunch-random-game/index.html",
+    "static/css/main.7e9b1562.chunk.css.map": "/lunch-random-game/static/css/main.7e9b1562.chunk.css.map",
+    "static/js/2.bb46e8fa.chunk.js.LICENSE.txt": "/lunch-random-game/static/js/2.bb46e8fa.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.022c32fd.js",
+    "static/js/2.bb46e8fa.chunk.js",
+    "static/css/main.7e9b1562.chunk.css",
+    "static/js/main.51431dc7.chunk.js"
+  ]
+}
