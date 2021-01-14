@@ -1,6 +1,3 @@
-import styled from "styled-components";
-// serialize deserialize
-
 export const createMenuData = (menus) => {
   const result = [];
   for(let i = 0; i < menus.length; i++){
@@ -20,12 +17,3 @@ export function shuffleArray(a) {
   } 
   return a;
 }
-
-export const Neumorphism = (Component) => styled(Component)`
-  background: #e0e0e0;
-  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
-`;
-export const NeumorphismActive = (Component) => styled(Component)`
-  background: #e0e0e0;
-  box-shadow: -5px -5px 10px #bebebe, 5px 5px 10px #ffffff;
-`;
