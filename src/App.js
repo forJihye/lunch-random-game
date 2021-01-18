@@ -17,12 +17,14 @@ const initalMenus = createMenuData(MENUS);
 function App() {
   const [menus, setMenus] = useState(initalMenus);
   const [newMenu, setNewMenu] = useState('');
+  const [selectedMenus, setSelectedMenus] = useState([]);
+
   const [result, setResult] = useState('');
   const [allSelected, setAllSelected] = useState(false);
   const [isPopup, setIsPopup] = useState(false);
 
   const shuffleTarget = useRef();
-  const selectedMenus = menus.filter(({select}) => select);
+  // const selectedMenus = menus.filter(({select}) => select);
 
   const onAddNewMenu = () => {
     if(newMenu.length === 0) return;
@@ -56,7 +58,9 @@ function App() {
   }
 
   const onSelected = () => {
-    if(selectedMenus.length < 3) return alert('메뉴를 3개 이상 선택하세요.');
+    const total = menus.filter(({select}) => select)
+    if(total.length < 3) return alert('메뉴를 3개 이상 선택하세요.');
+    setSelectedMenus(menus.filter(({select}) => select));
     setIsPopup(!isPopup);
   }
 
@@ -129,9 +133,7 @@ function App() {
         <div className="popup__inner">
           <div className="popup__inner-handler">
             <div className="menu-all">
-              <button className="menu-all__button neumo" onClick={onAllSelect}>
-                {allSelected ? '전체 해제' : '전체 선택'}
-              </button>
+              <button className="menu-all__button neumo" onClick={onAllSelect}>{allSelected ? '전체 해제' : '전체 선택'}</button>
             </div>
             <div className="menu-add">
               <input 
